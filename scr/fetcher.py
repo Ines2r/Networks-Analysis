@@ -45,3 +45,18 @@ if __name__ == "__main__":
         print(f"ANALYSE DU SCRUTIN N°{info['numero']}")
         print(f"Sujet : {info['titre']}\n")
         print(df_votes.head(10))
+
+def download_range(start_id, end_id):
+    all_data = []
+    fetcher = ScrutinFetcher(legislature=16)
+    
+    for i in range(start_id, end_id + 1):
+        info, df = fetcher.get_scrutin_data(i)
+        if df is not None:
+            df['scrutin_id'] = i
+            all_data.append(df)
+    
+    return pd.concat(all_data)
+
+data_complete = download_range(1, 50) 
+data_complete.to_csv("dataset_scrutins.csv")
