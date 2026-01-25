@@ -1,62 +1,68 @@
 import requests
 import xml.etree.ElementTree as ET
 import pandas as pd
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class ScrutinFetcher:
-    def __init__(self, legislature=17):
+    def __init__(self, legislature):
         self.base_url = f"https://www.nosdeputes.fr/{legislature}/scrutin"
 
     def get_scrutin_data(self, scrutin_id):
         url = f"{self.base_url}/{scrutin_id}/xml"
-        response = requests.get(url)
-        
-        if response.status_code != 200:
-            print(f"Erreur lors de la récupération du scrutin {scrutin_id}")
-            return None, None
-
-        root = ET.fromstring(response.content)
-        
-        # 1. Extraire les infos générales du scrutin (depuis le premier tag vote)
-        first_vote = root.find('vote')
-        scrutin_info = {
-            'numero': first_vote.find('scrutin/numero').text,
-            'titre': first_vote.find('scrutin/titre').text,
-            'date': first_vote.find('scrutin/date').text,
-            'sort': first_vote.find('scrutin/sort').text
-        }
-
-        # 2. Extraire la liste des votes des parlementaires
-        votes_list = []
-        for vote in root.findall('vote'):
-            votes_list.append({
-                'depute': vote.find('parlementaire_slug').text,
-                'groupe': vote.find('parlementaire_groupe_acronyme').text,
-                'position': vote.find('position').text
-            })
+        try:
+            response = requests.get(url, timeout=10)
             
-        return scrutin_info, pd.DataFrame(votes_list)
+            if response.status_code != 200 or not response.content:
+                return None
+
+            root = ET.fromstring(response.content)
+            
+            first_vote = root.find('vote')
+            if first_vote is None:
+                return None
+
+            votes_list = []
+            for vote in root.findall('vote'):
+                votes_list.append({
+                    'depute': vote.find('parlementaire_slug').text,
+                    'groupe': vote.find('parlementaire_groupe_acronyme').text,
+                    'position': vote.find('position').text,
+                    'scrutin_id': scrutin_id
+                })
+            return pd.DataFrame(votes_list)
+            
+        except (requests.exceptions.RequestException, ET.ParseError):
+            return None
 
 
-if __name__ == "__main__":
-    fetcher = ScrutinFetcher(legislature=16) # 16ème législature par exemple
-    info, df_votes = fetcher.get_scrutin_data(1)
 
-    if info:
-        print(f"ANALYSE DU SCRUTIN N°{info['numero']}")
-        print(f"Sujet : {info['titre']}\n")
-        print(df_votes.head(10))
-
-def download_range(start_id, end_id):
+def download(legislature, workers=10):
+    fetcher = ScrutinFetcher(legislature=legislature)
     all_data = []
-    fetcher = ScrutinFetcher(legislature=16)
+    scrutin_id_start = 1
+    chunk_size = 100
+    stop_searching = False
     
-    for i in range(start_id, end_id + 1):
-        info, df = fetcher.get_scrutin_data(i)
-        if df is not None:
-            df['scrutin_id'] = i
-            all_data.append(df)
-    
-    return pd.concat(all_data)
+    print(f"Exploration rapide de la législature {legislature}...")
 
-data_complete = download_range(1, 50) 
-data_complete.to_csv("dataset_scrutins.csv")
+    while not stop_searching:
+        current_chunk_ids = range(scrutin_id_start, scrutin_id_start + chunk_size)
+        print(f"Analyse du bloc {scrutin_id_start} à {scrutin_id_start + chunk_size}...")
+        
+        chunk_results = []
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            future_to_id = {executor.submit(fetcher.get_scrutin_data, i): i for i in current_chunk_ids}
+            for future in as_completed(future_to_id):
+                res = future.result()
+                if res is not None:
+                    chunk_results.append(res)
+        
+        if not chunk_results:
+            print("Aucun scrutin trouvé dans ce bloc. Fin de la législature atteinte.")
+            stop_searching = True
+        else:
+            all_data.extend(chunk_results)
+            scrutin_id_start += chunk_size
+
+    return pd.concat(all_data, ignore_index=True)

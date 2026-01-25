@@ -1,33 +1,64 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from config import MAP_VOTE
+from sklearn.metrics import jaccard_score
 
-df = pd.read_csv("dataset_scrutins.csv")
-
-map_vote = {'pour': 1, 'contre': -1, 'abstention': 0, 'nonVotant': 0}
-df['vote_val'] = df['position'].map(map_vote)
-
-pivot_votes = df.pivot_table(index='depute', columns='scrutin_id', values='vote_val').fillna(0)
-
-#print(pivot_votes)
+def filter_by_voters(df, min_voters):
+    """
+    Ne conserve que les scrutins ayant reçu au moins 'min_voters' votes.
+    """
+    counts = df.groupby('scrutin_id')['depute'].count()
+    valid_ids = counts[counts >= min_voters].index
+    df_filtered = df[df['scrutin_id'].isin(valid_ids)].copy()
+    print(f"Filtrage : {len(valid_ids)} scrutins conservés (seuil > {min_voters} votants).")
+    return df_filtered
 
 def compute_similarity(pivot_df, method='cosine'):
     if method == 'cosine':
-        sim_matrix = cosine_similarity(pivot_df)
-        sim_df = pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
-    
-    elif method == 'agreement':
-        sim_df = pd.DataFrame(index=pivot_df.index, columns=pivot_df.index)
-        for i in pivot_df.index:
-            matches = (pivot_df.loc[i] == pivot_df).sum(axis=1) / pivot_df.shape[1]
-            sim_df.loc[i] = matches
-            
-    return sim_df
+        avg = pivot_df.mean(axis=1)
+        filled_df = pivot_df.sub(avg, axis=0).fillna(0)
+        sim_matrix = cosine_similarity(filled_df)
+        return pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
 
-# --- Exécution ---
-sim_matrix = compute_similarity(pivot_votes, method='cosine')
-print(sim_matrix)
-print(sim_matrix['adrien-quatennens'].sort_values(ascending=False).head(10))
+    elif method == 'correlation':
+        return pivot_df.T.corr(method='pearson')
 
-#sim_matrix = compute_similarity(pivot_votes, method='agreement')
-#print(sim_matrix['adrien-quatennens'].sort_values(ascending=False).head(10))
+    elif method == 'jaccard':
+        data = pivot_df.values
+        n_deputes = data.shape[0]
+        sim_matrix = np.eye(n_deputes) # Diagonale à 1
+
+        for i in range(n_deputes):
+            for j in range(i + 1, n_deputes):
+                mask = ~np.isnan(data[i]) & ~np.isnan(data[j])
+                if np.sum(mask) < 5:
+                    score = 0
+                else:
+                    matches = np.sum(data[i][mask] == data[j][mask])
+                    union = np.sum(~np.isnan(data[i]) | ~np.isnan(data[j]))
+                    score = matches / union if union > 0 else 0
+                
+                sim_matrix[i, j] = sim_matrix[j, i] = score
+        
+        return pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
+
+    elif method == 'agreement_weighted':
+        data = pivot_df.values 
+        n_deputes = data.shape[0]
+        sim_matrix = np.zeros((n_deputes, n_deputes))
+
+        for i in range(n_deputes):
+            for j in range(i, n_deputes):
+                mask = ~np.isnan(data[i]) & ~np.isnan(data[j])
+                presence_commune = np.sum(mask)
+                
+                if presence_commune < 5:
+                    score = 0
+                else:
+                    accords = np.sum(data[i][mask] == data[j][mask])
+                    score = accords / presence_commune
+                
+                sim_matrix[i, j] = sim_matrix[j, i] = score
+        
+        return pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
