@@ -11,13 +11,19 @@ def filter_by_voters(df, min_voters):
     counts = df.groupby('scrutin_id')['depute'].count()
     valid_ids = counts[counts >= min_voters].index
     df_filtered = df[df['scrutin_id'].isin(valid_ids)].copy()
-    print(f"Filtrage : {len(valid_ids)} scrutins conservés (seuil > {min_voters} votants).")
+    print(f"Filtrage des scrutins : {len(valid_ids)} scrutins analysés (plus de {min_voters} votants).")
     return df_filtered
 
 def compute_similarity(pivot_df, method='cosine'):
-    if method == 'cosine':
+    if method == 'cosine': # Retrancher la moyenne des lignes (des votes du député)
         avg = pivot_df.mean(axis=1)
         filled_df = pivot_df.sub(avg, axis=0).fillna(0)
+        sim_matrix = cosine_similarity(filled_df)
+        return pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
+
+    elif method == 'cosine_centered': # Retrancher la moyenne des colonnes (des votes pour ce scrutin)
+        avg_scrutin = pivot_df.mean(axis=0)
+        filled_df = pivot_df.sub(avg_scrutin, axis=1).fillna(0)
         sim_matrix = cosine_similarity(filled_df)
         return pd.DataFrame(sim_matrix, index=pivot_df.index, columns=pivot_df.index)
 

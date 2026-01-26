@@ -44,7 +44,6 @@ def download(legislature, workers=10):
     chunk_size = 100
     stop_searching = False
     
-    print(f"Exploration rapide de la législature {legislature}...")
 
     while not stop_searching:
         current_chunk_ids = range(scrutin_id_start, scrutin_id_start + chunk_size)
@@ -59,7 +58,6 @@ def download(legislature, workers=10):
                     chunk_results.append(res)
         
         if not chunk_results:
-            print("Aucun scrutin trouvé dans ce bloc. Fin de la législature atteinte.")
             stop_searching = True
         else:
             all_data.extend(chunk_results)

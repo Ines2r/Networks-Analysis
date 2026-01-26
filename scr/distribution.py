@@ -22,5 +22,4 @@ def generate_distrib_plot(df, legislature, output_path="distribution.png"):
     plt.xlabel("Groupes Parlementaires")
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    print(f"Graphique de répartition sauvegardé sous '{output_path}'")
     plt.close()
