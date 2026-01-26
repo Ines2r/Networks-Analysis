@@ -33,7 +33,7 @@ def compute_similarity(pivot_df, method='cosine'):
     elif method == 'jaccard':
         data = pivot_df.values
         n_deputes = data.shape[0]
-        sim_matrix = np.eye(n_deputes) # Diagonale à 1
+        sim_matrix = np.eye(n_deputes)
 
         for i in range(n_deputes):
             for j in range(i + 1, n_deputes):

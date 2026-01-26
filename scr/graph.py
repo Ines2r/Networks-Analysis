@@ -43,3 +43,5 @@ def generate_graph(sim_matrix, df_meta, legislature, k_neighbors, min_voters, ou
     plt.axis('off')
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
+
+    return G
