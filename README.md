@@ -7,7 +7,7 @@ This project uses Graph Theory to analyze voting patterns in the French National
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
-| ![L15](./Output/2017-2022/network_jaccard.png) | ![L16](./Output/2022-2024/network_jaccard.png) |
+| ![L15](./Output/2017-2022/network_agreement_weighted.png) | ![L16](./Output/2022-2024/network_agreement_weighted.png) |
 
 Our analysis reveals a significant structural shift:
 * **Pre-2022 (15th):** A highly centralized network dominated by a monolithic presidential majority.
