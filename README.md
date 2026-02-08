@@ -158,7 +158,7 @@ This enables **theme-based analyses** (see Section 5).
 
 To move beyond a generic analysis and uncover the "hidden" fault lines of the Assembly, we implemented a **deterministic keyword-matching algorithm**. This process filters the legislative titles provided by the NosDéputés.fr XML API to categorize each vote into one of four strategic domains.
 
-> **Methodological Note (The "Budget" Reality):** > While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable. We can retrieve enough vote-call.
+> **Methodological Note:** > While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable. We can retrieve enough vote-call.
 
 The script scans each `titre` tag within the XML response. If a keyword is found, the `scrutin_id` is mapped to that specific theme using the following logic:
 
@@ -319,7 +319,7 @@ For Non-Linked MPs (Everyone else)The distance $d_{ij}$ does not directly reflec
   2. **Progressive left bloc:** LFI-NUPES + Greens + Socialists
   3. **Right-wing opposition:** LR + RN
 
-- **new coalitions**
+- **New coalitions**
 - **Distributed betweenness centrality:** Multiple potential pivots
 
 ### 4.3 Group Leaders: Intra-Group Analysis
@@ -443,7 +443,7 @@ The tightness of the clusters reflects high party discipline. Conversely, the LI
 
 ### 5.4 Thematic Analysis
 
-Beyond the global PCA, we repeat the analysis for each thematic domain. For example, for *“Ecology & Territories”*:
+Beyond the global PCA, we repeat the analysis for each thematic domain. For example, for *“Solidarity & Social”*:
 
 1. Filter $\mathbf{M}$ to retain only roll-call votes labeled “ecology”
 2. Reapply PCA to this submatrix
@@ -503,20 +503,20 @@ With only ~20% of variance captured in 2D, we **do not capture the full politica
 - **Geographical cleavages** (rural vs urban)  
 - Votes **correlated with local constituencies** (municipal politics) 
 
----### 9. Reproducibility
+---### 7. Reproducibility
 
 The full source code is available in the GitHub repository: [Networks-Analysis](https://github.com/Ines2r/Networks-Analysis)
 
 ---
 
-## 10. Related Work and Academic Positioning
+## 8. Related Work and Academic Positioning
 
 ---
-## 12. Limitations and Future Directions
+## 9. Limitations and Future Directions
 
-### 12.1 Limitations
+### 9.1 Limitations
 
-### 12.2 Future Research Directions
+### 9.2 Future Research Directions
 
 1. **Vote prediction:** Use vote vectors as features to predict positions on new roll calls (supervised classification).
 
@@ -527,9 +527,9 @@ The full source code is available in the GitHub repository: [Networks-Analysis](
 4. **Cross-national comparison:** Apply the same pipeline to European parliaments (Bundestag, Italian Senate, etc.) to reveal universal patterns.
 
 ---
-## 13. Conclusions
+## 10. Conclusions
 
-### 13.1 Summary of Key Findings
+### 10.1 Summary of Key Findings
 
 1. **French political structure is not simply bipolar but geometrically rich,** with hidden axes revealed by PCA and network graphs.
 
@@ -542,7 +542,7 @@ The full source code is available in the GitHub repository: [Networks-Analysis](
 5. **Thematic cleavages exist** and reveal coalitions that cross partisan labels.
 
 
-### 13.2 Methodological Assessment
+### 10.2 Methodological Assessment
 
 This study demonstrates the **feasibility and utility** of combined quantitative techniques (graphs + PCA) to uncover political structure. The methods are:  
 - **Reproducible** (open code, public API)  
