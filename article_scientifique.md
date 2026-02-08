@@ -20,7 +20,7 @@ For illustrative purposes, Figure 1 presents the composition of the 16th legisla
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
-| ![L15](./output/2017-2022/distribution.png) | ![L16](./output/2022-2024/distribution.png) |
+| ![L15](./Output/2017-2022/distribution.png) | ![L16](./Output/2022-2024/distribution.png) |
 
 **Figure 1:** Distribution of the 577 Members of Parliament of the 16th legislature (2022–2024) by political group. The lack of a clear majority stands in sharp contrast to the 15th legislature.
 
@@ -311,7 +311,7 @@ For Non-Linked MPs (Everyone else)The distance $d_{ij}$ does not directly reflec
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
-| ![L15](./output/2017-2022/network_cosine.png) | ![L16](./output/2022-2024/network_cosine.png) |
+| ![L15](./Output/2017-2022/network_cosine.png) | ![L16](./Output/2022-2024/network_cosine.png) |
 
 **Figure 2:** Graph of the 15th and 16th legislatures using cosine similarity. Nodes are colored by political group. Note the increased fragmentation in the 16th legislature.
 
@@ -404,7 +404,7 @@ $$
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
-| ![L15](./output/2017-2022/pca_Global.png) | ![L16](./output/2022-2024/pca_Global.png) |
+| ![L15](./Output/2017-2022/pca_Global.png) | ![L16](./Output/2022-2024/pca_Global.png) |
 
 **Figure 5:** Principal Component Analysis for all roll-call
 
@@ -458,7 +458,7 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
-| ![L15](./output/2017-2022/pca_Solidarité_&_Social.png) | ![L16](./output/2022-2024/pca_Solidarité_&_Social.png) |
+| ![L15](./Output/2017-2022/pca_Solidarité_&_Social.png) | ![L16](./Output/2022-2024/pca_Solidarité_&_Social.png) |
 
 **Figure 6:** Principal Component Analysis for roll-call votes related to Solidarity and Social.
 
