@@ -503,7 +503,8 @@ With only ~20% of variance captured in 2D, we **do not capture the full politica
 - **Geographical cleavages** (rural vs urban)  
 - Votes **correlated with local constituencies** (municipal politics) 
 
----### 7. Reproducibility
+---
+### 7. Reproducibility
 
 The full source code is available in the GitHub repository: [Networks-Analysis](https://github.com/Ines2r/Networks-Analysis)
 
