@@ -445,7 +445,7 @@ The tightness of the clusters reflects high party discipline. Conversely, the LI
 
 Beyond the global PCA, we repeat the analysis for each thematic domain. For example, for *“Solidarity & Social”*:
 
-1. Filter $\mathbf{M}$ to retain only roll-call votes labeled “ecology”
+1. Filter $\mathbf{M}$ to retain only roll-call votes labeled “solidarity” or "social"
 2. Reapply PCA to this submatrix
 3. Visualize: Points colored by political group
 4. Observe: **Theme-specific cleavages**
@@ -460,7 +460,7 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 **Main observations:**
 
-- The LFI vs. LR Cleavage: The PCA identifies a clear opposition between LFI and LR. This represents the classic "Social vs. Liberal" divide regarding welfare, labor laws, and state intervention.
+- 16th Legislature - The LFI vs. LR Cleavage: The PCA identifies a clear opposition between LFI and LR. This represents the classic "Social vs. Liberal" divide regarding welfare, labor laws, and state intervention.
 
 - The RN's Centrality: On this specific theme, the RN loses its vertical isolation and drifts toward the center of the axis. This "middle-ground" positioning suggests a hybrid voting strategy: supporting certain social measures while remaining distinct from the NUPES' radical left-wing proposals.
 
