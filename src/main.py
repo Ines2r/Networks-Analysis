@@ -7,6 +7,7 @@ from src.graph import generate_graph, generate_pca_plot
 from src.config import LEGIS_MAP
 from src.properties import compute_graph_metrics, print_report
 from src.classification import get_scrutins_by_theme
+from src.stats import analyze_attendance, plot_voter_distribution
 
 
 import pandas as pd
@@ -40,6 +41,11 @@ def run_full_pipeline(legislature, method, k_neighbors, min_voters, theme_name="
         print(f"Aucun vote trouvé pour le thème {theme_name}. Passage au suivant.")
         return
 
+    if theme_name == "Global":
+        attendance_df, group_stats = analyze_attendance(df, theme_name, top_n=10)
+        distrib_output = os.path.join(output_dir, f"presence_distrib_{theme_name.replace(' ', '_')}.png")
+        plot_voter_distribution(df, theme_name, distrib_output)
+
     df = filter_by_voters(df, min_voters)
     df['vote_val'] = df['position'].map(MAP_VOTE)
     
@@ -70,11 +76,13 @@ def run_full_pipeline(legislature, method, k_neighbors, min_voters, theme_name="
 
 if __name__ == "__main__":
 
-    for legislature in [15, 16]:
+    for legislature in [14, 15, 16]:
         print(f"\n{'='*60}")
         print(f" RAPPORT D'ANALYSE : LÉGISLATURE {legislature}")
         print(f"{'='*60}")
 
+        if legislature == 14:
+            print("Note: pour la 14e législature, la classification lit le fichier local `Data/scrutins.xml` (flux distant indisponible).")
         dict_themes = get_scrutins_by_theme(legislature=legislature)
 
         for method in ['cosine']:

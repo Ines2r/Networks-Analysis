@@ -16,7 +16,9 @@ MAP_VOTE = {
 }
 
 PARTY_COLORS = {
+    # --- 16ème et 15ème ---
     'ECOLO': '#2ecc71',      # Vert
+    'Écolo': '#2ecc71',
     'LFI-NUPES': '#e74c3c',  # Rouge
     'LFI': '#e74c3c',        # Rouge
     'GDR-NUPES': '#c0392b',  # Rouge foncé
@@ -45,7 +47,14 @@ PARTY_COLORS = {
     'LT': '#9b59b6',         # Violet clair (Libertés et Territoires)
 
     'LIOT': '#95a5a6',       # Gris
-    'NI': '#bdc3c7'          # Gris clair
+    'NI': '#bdc3c7',         # Gris clair
+
+    'UMP': '#3498db',        # Bleu (Union pour un Mouvement Populaire - prédécesseur de LR)
+    'Les Républicains': '#3498db', # Bleu (Nom adopté par l'UMP en 2015)
+    'SRC': '#e84393',        # Rose (Socialiste, Républicain et Citoyen)
+    'SER': '#e84393',        # Rose (Socialiste, Écologiste et Républicain - succède à SRC)
+    'RRDP': '#e67e22',       # Orange (Radical, Républicain, Démocrate et Progressiste - centre-gauche)
+    'UDI': '#d35400',        # Orange foncé (Union des démocrates et indépendants)
 }
 
 DEFAULT_COLOR = '#7f8c8d'

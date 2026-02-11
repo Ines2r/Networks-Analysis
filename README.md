@@ -20,6 +20,8 @@ For illustrative purposes, Figure 1 presents the composition of the 16th legisla
 
 **Figure 1:** Distribution of the 577 Members of Parliament of the 16th legislature (2022–2024) by political group. The lack of a clear majority stands in sharp contrast to the 15th legislature.
 
+> Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
+
 ### 1.2 Motivations and Research Questions
 
 Although each Member of Parliament is formally affiliated with a specific political group, actual voting dynamics reveal a **much more granular ideological structure**. Several questions naturally arise:
@@ -33,6 +35,26 @@ Our approach:
 - Uses **cosine distance** as a similarity metric
 - Applies **spatialization** techniques (force-directed layout) and **principal component analysis** to visualize these data.
 
+### 1.3 Overview of Main Political Forces and Ideological Positioning
+
+To facilitate the interpretation of the spatialization graphs, the table below summarizes the main political groups, their associated colors in our study, and their core principles according to their official platforms.
+
+| Color | Party/Group | Brief Description (Official Stance) | Source |
+| :--- | :--- | :--- | :--- |
+| <span style="color:#e74c3c">■</span> | **LFI / LFI-NUPES** | Focuses on ecological planning, wealth redistribution, and a constitutional shift to a 6th Republic. | [lafranceinsoumise.fr](https://lafranceinsoumise.fr) |
+| <span style="color:#2ecc71">■</span> | **ECOLO** | Advocates for environmental sustainability, social-ecology, and biodiversity protection. | [lesecologistes.fr](https://lesecologistes.fr) |
+| <span style="color:#e84393">■</span> | **SOC / SOC-A** | Promotes a social-democratic model, defense of public services, and labor rights. | [parti-socialiste.fr](https://parti-socialiste.fr) |
+| <span style="color:#c0392b">■</span> | **GDR** | Defense of the working class, social justice, and opposition to liberal economic policies. | [pcf.fr](https://pcf.fr) |
+| <span style="color:#f1c40f">■</span> | **REN / LREM** | Supports economic competitiveness, full employment policies, and European integration. | [parti-renaissance.fr](https://parti-renaissance.fr) |
+| <span style="color:#e67e22">■</span> | **DEM / MODEM** | Emphasizes institutional balance, education, and a centrist European approach. | [mouvementdemocrate.fr](https://www.mouvementdemocrate.fr) |
+| <span style="color:#8e44ad">■</span> | **HOR** | Focuses on long-term national stability, security, and supporting the presidential majority. | [horizonsleparti.fr](https://horizonsleparti.fr) |
+| <span style="color:#3498db">■</span> | **LR** | Advocates for fiscal discipline, restoration of state authority, and economic liberalism. | [republicains.fr](https://republicains.fr) |
+| <span style="color:#2564a4">■</span> | **RN** | Prioritizes national sovereignty, immigration control, and "National Priority" policies. | [rassemblementnational.fr](https://rassemblementnational.fr) |
+| <span style="color:#95a5a6">■</span> | **LIOT** | An independent group focused on territorial interests, decentralization, and local governance. | [groupe-liot.fr](https://groupe-liot.fr) |
+| <span style="color:#d35400">■</span> | **UDI / UAI** | Promotes a liberal-humanist and pro-European project centered on a social-market economy. | [parti-udi.fr](https://parti-udi.fr) |
+| <span style="color:#bdc3c7">■</span> | **NI** | Non-affiliated members who do not belong to any parliamentary group. | [assemblee-nationale.fr](https://www.assemblee-nationale.fr) |
+
+> **Note on Data:** Descriptions are synthesized from the "Manifesto" or "Our Values" sections of the parties' official websites to ensure alignment with their self-defined political identity.
 ---
 
 
@@ -184,12 +206,19 @@ THEMATIQUES = {
 }
 ```
 
-| Theme | Number of Ballots |
-| :--- | :---: |
-| **Solidarity & Social**  | 335 |
-| **Ecology & Territories** | 714 |
-| **Economy & State** | 68 |
-| **Security & International** | 550 |
+### 1.4 Dataset Overview: Distribution of Ballots by Theme
+
+The following table summarizes the volume of roll-call votes (*scrutins*) analyzed for each legislature, categorized by their primary thematic focus. These themes serve as the basis for our comparative spatial analysis.
+
+| Theme | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| :--- | :---: | :---: |
+| **Solidarity & Social** | 757 | 335 |
+| **Ecology & Territories** | 641 | 709 |
+| **Economy & State** | 157 | 68 |
+| **Security & International** | 396 | 519 |
+| **Total Analyzed Ballots** | **1,951** | **1,631** |
+
+> **Note:** The distribution of ballots shown above should not be used to draw direct conclusions about the evolution of parliamentary activity. The classification is based on a simple keyword-based filter, which inevitably misses certain ballots. The primary objective of this filtering process is not exhaustiveness, but relevance: we aim to isolate a selection of ballots that are certain to address the specific theme.
 
 ---
 
@@ -557,6 +586,9 @@ This study demonstrates the **feasibility and utility** of combined quantitative
 
 Émond, V., & Holovatch, Y. (2014). Open data from NosDéputés.fr: A resource for computational political analysis. *Journal of Open Government Data*, 3(2), 45-62.
 [NosDéputés API](https://www.nosdeputes.fr/api/)
+
+[Asssemblée Nationale](https://data.assemblee-nationale.fr/)
+
 ---
 
 ## Appendices

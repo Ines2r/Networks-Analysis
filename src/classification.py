@@ -1,7 +1,8 @@
 import requests
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
-URL = "https://www.nosdeputes.fr/16/scrutins/xml"
+URL = "https://www.nosdeputes.fr/{legislature}/scrutins/xml"
 
 THEMATIQUES = {
     "Solidarité & Social": [
@@ -31,21 +32,47 @@ def classifier_titre(titre):
 
 
 def get_scrutins_by_theme(legislature=16):
-    url = f"https://www.nosdeputes.fr/{legislature}/scrutins/xml"
-    response = requests.get(url)
-    root = ET.fromstring(response.content)
-    
+    """Retourne un dict {theme: [ids]}.
+
+    Pour la 14e législature, le flux distant n'est pas utilisable — on lit
+    le fichier local `Data/scrutins.xml` et on applique les mêmes mots-clés.
+    Pour les autres législatures, on conserve l'accès distant comme avant.
+    """
     themes_map = {theme: [] for theme in THEMATIQUES.keys()}
-    
+
+    if int(legislature) == 14:
+        local_path = Path(__file__).resolve().parents[1] / 'Data' / 'scrutins.xml'
+        if not local_path.exists():
+            raise FileNotFoundError(f"Fichier local attendu introuvable: {local_path}")
+
+        tree = ET.parse(local_path)
+        root = tree.getroot()
+    else:
+        url = URL.format(legislature=legislature)
+        response = requests.get(url)
+        response.raise_for_status()
+        root = ET.fromstring(response.content)
+
     for s in root.findall('scrutin'):
-        id_scrutin = int(s.find('numero').text)
-        titre = s.find('titre').text.lower()
-        
+        num_el = s.find('numero')
+        titre_el = s.find('titre')
+        if num_el is None or titre_el is None or titre_el.text is None:
+            continue
+
+        try:
+            id_scrutin = int(num_el.text)
+        except Exception:
+            continue
+
+        titre = titre_el.text.lower()
+
+        matched = False
         for theme, mots in THEMATIQUES.items():
             if any(mot in titre for mot in mots):
                 themes_map[theme].append(id_scrutin)
+                matched = True
                 break
-                
+
     return themes_map
 
 themes_map = get_scrutins_by_theme()
