@@ -14,11 +14,11 @@ The French National Assembly is the lower chamber of the French bicameral parlia
 
 For illustrative purposes, Figure 1 presents the composition of the 16th legislature (2022–2024) by political group. This composition became **fragmented** following the early legislative elections of June 2022:
 
-| 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
-| :---: | :---: |
-| ![L15](./Output/2017-2022/distribution.png) | ![L16](./Output/2022-2024/distribution.png) |
+| 14th Legislature (2012-2017) | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| :---: | :---: | :---: |
+| ![L14](./Output/2012-2017/distribution.png) | ![L15](./Output/2017-2022/distribution.png) | ![L16](./Output/2022-2024/distribution.png) |
 
-**Figure 1:** Distribution of the 577 Members of Parliament of the 16th legislature (2022–2024) by political group. The lack of a clear majority stands in sharp contrast to the 15th legislature.
+**Figure 1:** Distribution of the 577 Members of Parliament by political group.
 
 > Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
 
@@ -39,20 +39,22 @@ Our approach:
 
 To facilitate the interpretation of the spatialization graphs, the table below summarizes the main political groups, their associated colors in our study, and their core principles according to their official platforms.
 
+
 | Color | Party/Group | Brief Description (Official Stance) | Source |
 | :--- | :--- | :--- | :--- |
-| <span style="color:#e74c3c">■</span> | **LFI / LFI-NUPES** | Focuses on ecological planning, wealth redistribution, and a constitutional shift to a 6th Republic. | [lafranceinsoumise.fr](https://lafranceinsoumise.fr) |
-| <span style="color:#2ecc71">■</span> | **ECOLO** | Advocates for environmental sustainability, social-ecology, and biodiversity protection. | [lesecologistes.fr](https://lesecologistes.fr) |
-| <span style="color:#e84393">■</span> | **SOC / SOC-A** | Promotes a social-democratic model, defense of public services, and labor rights. | [parti-socialiste.fr](https://parti-socialiste.fr) |
-| <span style="color:#c0392b">■</span> | **GDR** | Defense of the working class, social justice, and opposition to liberal economic policies. | [pcf.fr](https://pcf.fr) |
-| <span style="color:#f1c40f">■</span> | **REN / LREM** | Supports economic competitiveness, full employment policies, and European integration. | [parti-renaissance.fr](https://parti-renaissance.fr) |
-| <span style="color:#e67e22">■</span> | **DEM / MODEM** | Emphasizes institutional balance, education, and a centrist European approach. | [mouvementdemocrate.fr](https://www.mouvementdemocrate.fr) |
-| <span style="color:#8e44ad">■</span> | **HOR** | Focuses on long-term national stability, security, and supporting the presidential majority. | [horizonsleparti.fr](https://horizonsleparti.fr) |
-| <span style="color:#3498db">■</span> | **LR** | Advocates for fiscal discipline, restoration of state authority, and economic liberalism. | [republicains.fr](https://republicains.fr) |
-| <span style="color:#2564a4">■</span> | **RN** | Prioritizes national sovereignty, immigration control, and "National Priority" policies. | [rassemblementnational.fr](https://rassemblementnational.fr) |
-| <span style="color:#95a5a6">■</span> | **LIOT** | An independent group focused on territorial interests, decentralization, and local governance. | [groupe-liot.fr](https://groupe-liot.fr) |
-| <span style="color:#d35400">■</span> | **UDI / UAI** | Promotes a liberal-humanist and pro-European project centered on a social-market economy. | [parti-udi.fr](https://parti-udi.fr) |
-| <span style="color:#bdc3c7">■</span> | **NI** | Non-affiliated members who do not belong to any parliamentary group. | [assemblee-nationale.fr](https://www.assemblee-nationale.fr) |
+| ![#e74c3c](https://img.shields.io/static/v1?label=&message=%20&color=e74c3c) | **LFI / LFI-NUPES** | Focuses on ecological planning, wealth redistribution, and a constitutional shift to a 6th Republic. | [lafranceinsoumise.fr](https://lafranceinsoumise.fr) |
+| ![#2ecc71](https://img.shields.io/static/v1?label=&message=%20&color=2ecc71) | **ECOLO** | Advocates for environmental sustainability, social-ecology, and biodiversity protection. | [lesecologistes.fr](https://lesecologistes.fr) |
+| ![#e84393](https://img.shields.io/static/v1?label=&message=%20&color=e84393) | **SRC / SER / SOC** | Social-democratic model, defense of public services, and labor rights (Historical Socialist groups). | [parti-socialiste.fr](https://parti-socialiste.fr) |
+| ![#c0392b](https://img.shields.io/static/v1?label=&message=%20&color=c0392b) | **GDR** | Defense of the working class, social justice, and opposition to liberal economic policies. | [pcf.fr](https://pcf.fr) |
+| ![#f1c40f](https://img.shields.io/static/v1?label=&message=%20&color=f1c40f) | **REN / LREM** | Supports economic competitiveness, full employment policies, and European integration. | [parti-renaissance.fr](https://parti-renaissance.fr) |
+| ![#e67e22](https://img.shields.io/static/v1?label=&message=%20&color=e67e22) | **DEM / RRDP** | Centrist approach, institutional balance, and education (includes center-left Radicals). | [mouvementdemocrate.fr](https://www.mouvementdemocrate.fr) |
+| ![#8e44ad](https://img.shields.io/static/v1?label=&message=%20&color=8e44ad) | **HOR** | Focuses on long-term national stability, security, and supporting the presidential majority. | [horizonsleparti.fr](https://horizonsleparti.fr) |
+| ![#3498db](https://img.shields.io/static/v1?label=&message=%20&color=3498db) | **UMP / LR** | Advocates for fiscal discipline, restoration of state authority, and economic liberalism. | [republicains.fr](https://republicains.fr) |
+| ![#2564a4](https://img.shields.io/static/v1?label=&message=%20&color=2564a4) | **RN** | Prioritizes national sovereignty, immigration control, and "National Priority" policies. | [rassemblementnational.fr](https://rassemblementnational.fr) |
+| ![#d35400](https://img.shields.io/static/v1?label=&message=%20&color=d35400) | **UDI / UAI** | Liberal-humanist and pro-European project centered on a social-market economy. | [parti-udi.fr](https://parti-udi.fr) |
+| ![#95a5a6](https://img.shields.io/static/v1?label=&message=%20&color=95a5a6) | **LIOT** | An independent group focused on territorial interests, decentralization, and local governance. | [groupe-liot.fr](https://groupe-liot.fr) |
+| ![#bdc3c7](https://img.shields.io/static/v1?label=&message=%20&color=bdc3c7) | **NI** | Non-affiliated members who do not belong to any parliamentary group. | [assemblee-nationale.fr](https://www.assemblee-nationale.fr) |
+
 
 > **Note on Data:** Descriptions are synthesized from the "Manifesto" or "Our Values" sections of the parties' official websites to ensure alignment with their self-defined political identity.
 ---
@@ -185,7 +187,6 @@ To move beyond a generic analysis and uncover the "hidden" fault lines of the As
 The script scans each `titre` tag within the XML response. If a keyword is found, the `scrutin_id` is mapped to that specific theme using the following logic:
 
 ```python
-# Thematic Mapping Dictionary
 THEMATIQUES = {
     "Solidarité & Social": [
         "pauvreté", "handicap", "retraite", "social", "précarité", "apl", 
@@ -210,15 +211,17 @@ THEMATIQUES = {
 
 The following table summarizes the volume of roll-call votes (*scrutins*) analyzed for each legislature, categorized by their primary thematic focus. These themes serve as the basis for our comparative spatial analysis.
 
-| Theme | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
-| :--- | :---: | :---: |
-| **Solidarity & Social** | 757 | 335 |
-| **Ecology & Territories** | 641 | 709 |
-| **Economy & State** | 157 | 68 |
-| **Security & International** | 396 | 519 |
-| **Total Analyzed Ballots** | **1,951** | **1,631** |
+| Theme | 14th Legislature (2012-2017) | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| :--- | :---: | :---: | :---: |
+| **Solidarity & Social** | 138 | 757 | 335 |
+| **Ecology & Territories** | 73 | 641 | 709 |
+| **Economy & State** | 72 | 157 | 68 |
+| **Security & International** | 26 | 396 | 519 |
+| **Total Analyzed Ballots** | **309** | **1,951** | **1,631** |
 
 > **Note:** The distribution of ballots shown above should not be used to draw direct conclusions about the evolution of parliamentary activity. The classification is based on a simple keyword-based filter, which inevitably misses certain ballots. The primary objective of this filtering process is not exhaustiveness, but relevance: we aim to isolate a selection of ballots that are certain to address the specific theme.
+
+There has been a notable rise in MP activity in recent years: the number of ballots grew from 1,023 during the 14th Legislature to 4,394 in the 15th and 4,029 in the 16th.
 
 ---
 
@@ -236,38 +239,15 @@ https://www.nosdeputes.fr/{LEGISLATURE}/scrutin/{SCRUTIN_ID}/xml
 ```
 
 where `LEGISLATURE` $\in \{15, 16\}$ and `SCRUTIN_ID` is the numerical identifier of the vote.
-Unfortunately, the API hasn't the same amount of data for previous legislatures.
+Unfortunately, the API hasn't the same amount of data for previous legislatures. For the 14th legislature, we found an archive on [Asssemblée Nationale](https://data.assemblee-nationale.fr/).
 
 ### 3.2 Parallel Download Protocol
 
 To accelerate data collection (approx 4,000 roll-call votes), we use a **ThreadPoolExecutor** with up to 10 concurrent workers.
 
-**Pseudo-code:**
 
-```
-function download(legislature, workers=10):
-  fetcher = ScrutinFetcher(legislature)
-  all_data = []
-  scrutin_id_start = 1
-  
-  while not stop_searching:
-    current_chunk = range(scrutin_id_start, scrutin_id_start + 100)
-    
-    for each scrutin_id in parallel (workers threads):
-      df_scrutin = fetcher.get_scrutin_data(scrutin_id)
-      if df_scrutin not empty:
-        chunk_results.append(df_scrutin)
-    
-    if chunk_results empty:
-      stop_searching = True
-    else:
-      all_data.extend(chunk_results)
-      scrutin_id_start += 100
-  
-  return pd.concat(all_data)
-```
-
-**Output:** Two CSV files generated
+**Output:** Three CSV files generated
+- `dataset_scrutins_14.csv` (2012–2017)
 - `dataset_scrutins_15.csv` (2017–2022)
 - `dataset_scrutins_16.csv` (2022–2024)
 
@@ -286,6 +266,7 @@ pivot_votes = df.pivot_table(
 ```
 
 Observed dimensions:
+- 14th legislature: ~635 MPs × ~4, 394 roll-call votes
 - 15th legislature: ~648 MPs × ~4, 394 roll-call votes
 - 16th legislature: ~605 MPs × ~4, 029 roll-call votes
 
@@ -334,18 +315,19 @@ For Non-Linked MPs (Everyone else)The distance $d_{ij}$ does not directly reflec
 * **Political Clusters:** Groups with high voting discipline (e.g., LFI or Renaissance) naturally form dense, color-coded clouds.
 * **Pivots and Bridges:** MPs who frequently vote across party lines are positioned between these clusters, acting as geometric "bridges."
 
-| 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
-| :---: | :---: |
-| ![L15](./Output/2017-2022/network_cosine.png) | ![L16](./Output/2022-2024/network_cosine.png) |
+| 14th Legislature (2012-2017) | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| :---: | :---: | :---: |
+| ![L14](./Output/2012-2017/network_cosine.png) | ![L15](./Output/2017-2022/network_cosine.png) | ![L16](./Output/2022-2024/network_cosine.png) |
 
-**Figure 2:** Graph of the 15th and 16th legislatures using cosine similarity. Nodes are colored by political group. Note the increased fragmentation in the 16th legislature.
+**Figure 2:** Graph of the 14th, 15th, and 16th legislatures using cosine similarity. Nodes are colored by political group. Note the increased fragmentation in the 16th legislature.
 
 
 #### Observations:
 
+- In ten years, the Socialist and Republican parties have virtually disappeared from the political landscape.
 - **Tripolar fragmentation:**
   1. **Reduced presidential bloc:** LREM + moderate allies
-  2. **Progressive left bloc:** LFI-NUPES + Greens + Socialists
+  2. **Left bloc:** LFI-NUPES + Greens + Socialists
   3. **Right-wing opposition:** LR + RN
 
 - **New coalitions**
@@ -433,6 +415,9 @@ $$
 
 **Figure 5:** Principal Component Analysis for all roll-call
 
+A reliable PCA could not be generated for the 14th Legislature due to extreme absenteeism and a low volume of ballots. While filtering out deputies with less than 20% participation was necessary to avoid the 'Arch Effect' and data distortion, it resulted in too few data points to provide more than basic legislative insights.
+
+
 #### 15th Legislature – Global PCA Results
 
 ```
@@ -448,12 +433,7 @@ PC2 explains 17% of the variance
 Cumulative variance (2D): 24%
 ```
 
-**Analysis of Fragmentation:** Contrary to what one might expect, higher explained variance in the 16th Legislature does not mean less complexity; it means that the "chaos" is now organized around clearer battle lines.
-
-In the 15th, the opposition was fragmented into small, unpredictable signals.
-
-In the 16th, the emergence of strong, disciplined blocs (RN, NUPES, and a narrower Presidential majority) has "mechanized" the voting process.
-
+**Analysis of Fragmentation:** 
 Even if the Assembly is more politically fragmented, the voting behavior is more predictable. The increase in PC1 and PC2 variance proves that the "Tri-polar" structure (Majority, Left, and National Right) has become the dominant engine of parliamentary life, overshadowing the technical or individual votes that characterized the previous term.
 
 1. The Horizontal Axis (PC1): The Opposition Divide
@@ -481,7 +461,7 @@ Beyond the global PCA, we repeat the analysis for each thematic domain. For exam
 
 Not all themes yield insightful visualizations; those with higher explained variance in the PCA are the most significant for analysis.
 
-| 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| 15th Legislature | 16th Legislature (2022-2024) |
 | :---: | :---: |
 | ![L15](./Output/2017-2022/pca_Solidarité_&_Social.png) | ![L16](./Output/2022-2024/pca_Solidarité_&_Social.png) |
 
@@ -563,13 +543,17 @@ The full source code is available in the GitHub repository: [Networks-Analysis](
 
 1. **French political structure is not simply bipolar but geometrically rich,** with hidden axes revealed by PCA and network graphs.
 
-2. **Post-2022 fragmentation is structurally observable,** not merely anecdotal: increased number of pivots, dispersed centrality, and increased explained variance.
+2. **The 2017 political earthquake** is structurally evident: The 15th Legislature (2017-2022) marks the sudden "evaporation" of the traditional Socialist (SRC/SER) and Republican (UMP/LR) dominance. Under the influence of the Renaissance (LREM) party, the assembly shifted from a classic dual-bloc system to a tripartite model.
 
-3. **Cosine similarity effectively balances participation and orientation,** outperforming the alternative metrics tested for this purpose.
+3. **Post-2022 fragmentation is structurally observable,** not merely anecdotal: increased number of pivots, dispersed centrality, and increased explained variance.
 
-4. **Leaders depend on context:** crucial distinction between intra-group leaders (cohesion) and global leaders (external influence).
+4. **Cosine similarity effectively balances participation and orientation,** outperforming the alternative metrics tested for this purpose.
 
-5. **Thematic cleavages exist** and reveal coalitions that cross partisan labels.
+5. **Leaders depend on context:** crucial distinction between intra-group leaders (cohesion) and global leaders (external influence).
+
+6. **Thematic cleavages exist** and reveal coalitions that cross partisan labels.
+
+7. The 14th Legislature (2012-2017) as a statistical outlier: The analysis of this period was limited by the use of older archival data. A significantly higher absenteeism rate and a lower number of recorded ballots made it difficult to generate a high-quality PCA. This resulted in a sparser visualization, offering only basic insights compared to the much denser data of the following years.
 
 
 ### 10.2 Methodological Assessment
@@ -594,6 +578,17 @@ This study demonstrates the **feasibility and utility** of combined quantitative
 ## Appendices
 
 ### Appendix A: Raw Data and Descriptive Statistics
+
+```
+14th Legislature (2012-2017)
+──────────────────────────────
+Period: June 2012 → June 2017
+Deputies analyzed: 635
+Raw votes downloaded: 1023
+Votes retained (min_voters=0): 1023
+Similarity metric: Cosine
+k-NN parameter: 5
+```
 
 ```
 15th Legislature (2017-2022)
@@ -634,4 +629,3 @@ Generates:
 - Thematic PCA graphs: Output/{years}/pca_*.png
 - Group distributions: Output/{years}/distribution.png
 - Text reports (stdout): Pivots, pillars, leaders
-
