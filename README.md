@@ -2,7 +2,7 @@
 
 This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and shared votes as edges, we reveal the hidden mathematical structure of political life, moving beyond simple party labels.
 
-**Keywords:** Quantitative political analysis; network graphs; PCA; parliamentary votes; similarity analysis; France
+**Keywords:** Quantitative political analysis; graphs; PCA; parliamentary votes; similarity analysis
 
 ---
 
@@ -21,6 +21,8 @@ For illustrative purposes, Figure 1 presents the composition of the three last l
 **Figure 1:** Distribution of the 577 Members of Parliament by political group.
 
 > Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
+
+> We have more than 577 MPs because of resignations and replacements during the legislature.
 
 ### 1.2 Motivations and Research Questions
 
@@ -56,7 +58,7 @@ To facilitate the interpretation of the spatialization graphs, the table below s
 | ![#bdc3c7](https://img.shields.io/static/v1?label=&message=%20&color=bdc3c7) | **NI** | Non-affiliated members who do not belong to any parliamentary group. | [assemblee-nationale.fr](https://www.assemblee-nationale.fr) |
 
 
-> **Note on Data:** Descriptions are synthesized from the "Manifesto" or "Our Values" sections of the parties' official websites to ensure alignment with their self-defined political identity.
+> **Note:** Descriptions are synthesized from the "Manifesto" or "Our Values" sections of the parties' official websites to ensure alignment with their self-defined political identity.
 ---
 
 
@@ -80,7 +82,6 @@ Each component $v_{i,j}$ encodes the MP's position on a specific vote $j$:
 - $0$ : Abstention (Present but did not take a position)
 - $\text{NaN}$ : Absence (Not present during the session)
 
-<!-- This representation relies on the fundamental assumption that **political positions form a continuous metric space**, where proximity between two vectors reflects real ideological alignment. This axiom is well established in quantitative political science (see Hinich & Munger, 1994; Poole & Rosenthal, 2007). -->
 
 #### 2.1.2 Vote Matrix and Data Structure
 
@@ -159,121 +160,13 @@ $$
 
 ### 2.4 Synthesis: Choice of Metric
 
-For this study, **we favor cosine similarity**. It strikes the best balance between **ideological direction** and **statistical robustness**. Unlike Pearson, it avoids over-inflating similarities based on tiny samples. Unlike the Agreement Ratio, it preserves the **granularity** of the Assembly by allowing subtle differences in participation and individual deviations to translate into distinct, interpretable geometric coordinates.
-
-### 2.5 Data Filtering
-
-<!-- #### 2.5.1 Minimum Participation Threshold
-
-**Parameter:** $\min_{\text{voters}} = 5$
-
-She chose to keep all ballot, even the technical one with a few voters. -->
-
-We apply a **thematic classification** based on the title of each ballot vote. Themes include:
-- Ecology & Territories (agriculture, climate, energy, transport)
-- Economy & State (taxation, customs, inflation)
-- Security & International Affairs (police, justice, defense)
-- Solidarity & Social Policy (pensions, social benefits, disability)
-
-This enables **theme-based analyses**.
-
-#### Categorization Methodology
-
-We implemented a **deterministic keyword-matching algorithm**. This process filters the legislative titles provided by the NosDéputés.fr XML API to categorize each vote into one of four strategic domains.
-
-> **Methodological Note:** > While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable.
-
-The script scans each `titre` (title) tag within the XML response. If a keyword is found, the `scrutin_id` (ballot ID) is mapped to that specific theme using the following logic:
-
-```python
-THEMATIQUES = {
-    "Solidarité & Social": [
-        "pauvreté", "handicap", "retraite", "social", "précarité", "apl", 
-        "famille", "prestations", "rsa", "solidarité", "chômage"
-    ],
-    "Écologie & Territoires": [
-        "écologie", "environnement", "climat", "nucléaire", "énergie", "biodiversité", 
-        "eau", "agriculture", "agricole", "pesticide", "rural", "transport"
-    ],
-    "Économie & État": [
-        "économie", "fiscal", "impôt", "inflation", 
-        "douanes", "entreprises", "croissance"
-    ],
-    "Sécurité & International": [
-        "justice", "sécurité", "police", "prison", "immigration", 
-        "étranger", "asile", "frontière", "armée", "défense", "europe"
-    ]
-}
-```
-
-### 1.4 Dataset Overview: Distribution of Ballots by Theme
-
-The following table summarizes the volume of ballot votes analyzed for each legislature, categorized by their primary thematic focus. These themes serve as the basis for our comparative spatial analysis.
-
-| Theme | 14th Legislature (2012-2017) | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
-| :--- | :---: | :---: | :---: |
-| **Solidarity & Social** | 138 | 757 | 335 |
-| **Ecology & Territories** | 73 | 641 | 709 |
-| **Economy & State** | 72 | 157 | 68 |
-| **Security & International** | 26 | 396 | 519 |
-| **Total Analyzed Ballots** | **309** | **1,951** | **1,631** |
-
-> **Note:** The distribution of ballots shown above should not be used to draw direct conclusions about the evolution of parliamentary activity. The classification is based on a simple keyword-based filter, which inevitably misses certain ballots. The primary objective of this filtering process is not exhaustiveness, but relevance: we aim to isolate a selection of ballots that are certain to address the specific theme.
-
-There has been a notable rise in MP activity in recent years: the number of ballots grew from 1,023 during the 14th Legislature to 4,394 in the 15th and 4,029 in the 16th.
+For this study, **we favor cosine similarity**. It strikes the best balance between **ideological direction** and **statistical robustness**. Unlike Pearson, it avoids over-inflating similarities based on tiny samples. Unlike the Agreement Ratio, it preserves the granularity of the Assembly by allowing subtle differences in participation and individual deviations to translate into distinct geometric coordinates.
 
 ---
 
+## 3. Voting Network
 
-## 3. Architecture and Implementation of Data Retrieval
-
-### 3.1 Data Source and API
-
-**Primary source:** NosDéputés.fr — a freely accessible collaborative database, fed by the official data of the French National Assembly via its XML export protocols.
-
-**API endpoints:**
-```
-https://www.nosdeputes.fr/{LEGISLATURE}/scrutins/xml
-https://www.nosdeputes.fr/{LEGISLATURE}/scrutin/{SCRUTIN_ID}/xml
-```
-
-where `LEGISLATURE` $\in \{15, 16\}$ and `SCRUTIN_ID` is the numerical identifier of the vote.
-Unfortunately, the API hasn't the same amount of data for previous legislatures. For the 14th legislature, we found an archive on [Asssemblée Nationale](https://data.assemblee-nationale.fr/).
-
-### 3.2 Parallel Download Protocol
-
-To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPoolExecutor** with up to 10 concurrent workers.
-
-**Output:** Three CSV files generated
-- `dataset_scrutins_14.csv` (2012–2017)
-- `dataset_scrutins_15.csv` (2017–2022)
-- `dataset_scrutins_16.csv` (2022–2024)
-
-Each record: `{depute, group, position, scrutin_id}`
-
-### 3.3 Transformation into a Pivot Matrix
-
-The raw list of votes is transformed into a **sparse matrix**:
-
-```python
-pivot_votes = df.pivot_table(
-  index='depute', 
-  columns='scrutin_id', 
-  values='vote_val'
-)
-```
-
-Observed dimensions:
-- 14th legislature: ~635 MPs × ~1, 023 ballot votes
-- 15th legislature: ~648 MPs × ~4, 394 ballot votes
-- 16th legislature: ~605 MPs × ~4, 029 ballot votes
-
-We have more than 577 MPs because of resignations and replacements during the legislature.
-
----
-## 4. Voting Network
-
-### 4.1 Graph Construction via k-NN
+### 3.1 Graph Construction via k-NN
 
 Rather than creating a complete graph (potentially 150k+ edges), we use a **k-nearest neighbors topology**:
 
@@ -288,7 +181,7 @@ For each Member of Parliament $i$:
 - $k$ too small → fragmented network, little information
 - $k$ too large → visual noise, weakly meaningful edges
 
-### 4.2 Layout Algorithm: Spring Model
+### 3.2 Layout Algorithm: Spring Model
 
 To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout):
 
@@ -329,35 +222,15 @@ For Non-Linked MPs (Everyone else)The distance $d_{ij}$ does not directly reflec
 - **Distributed betweenness centrality:** Multiple potential pivots
 
 
-## 5. Principal Component Analysis (PCA): Reduction and Visualization
+## 4. Principal Component Analysis (PCA): Reduction and Visualization
 
 We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply Principal Component Analysis (PCA). This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. This allow us to geographically map political distances: two deputies appearing close on the plot share a high cosine similarity in their actual voting records.
 
-### 5.1 Theoretical Foundations of PCA
+
+### 4.1 Theoretical Foundations of PCA
 
 
-Formally, let $\mathbf{X} \in \mathbb{R^ {m \times n}}$ be the centered and scaled matrix:
-
-$$
-\mathbf{X}_{\text{std}} = \text{StandardScaler}(\mathbf{M})
-$$
-
-PCA identifies the two principal axes $\mathbf{u}_1, \mathbf{u}_2$ that maximize the explained variance:
-
-$$
-\mathbf{u}_k = \arg\max_{\|\mathbf{u}\|=1} \text{Var}(\mathbf{X}_{\text{std}} \mathbf{u})
-$$
-
-### 5. Principal Component Analysis (PCA)
-
-We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply **Principal Component Analysis (PCA)**. 
-
-This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. This allows us to geographically map political distances: two deputies appearing close on the plot share a high cosine similarity in their actual voting records.
-
-### 5.1 Theoretical Foundations of PCA
-
-
-Formally, let $\mathbf{M} \in \mathbb{R}^{m \times n}$ be the voting matrix (with $m$ MPs and $n$ votes). We first transform it into a standardized matrix $\mathbf{X}_{\text{std}}$ where each element $x_{i,j}$ is defined as:
+Formally, let $\mathbf{M} \in \mathbb{R}^{m \times n}$ be the voting matrix (with $m$ MPs and $n$ votes). We first transform it into a standardized matrix $\mathbf{X}\_{\text{std}}$ where each element $x\_{i,j}$ is defined as:
 
 $$x_{i,j} = \frac{m_{i,j} - \mu_j}{\sigma_j}$$
 
@@ -387,7 +260,7 @@ x_i = \mathbf{v}_i \cdot \mathbf{u}_1, \quad y_i = \mathbf{v}_i \cdot \mathbf{u}
 $$
 
 
-### 5.2 Insight: The "Center of Gravity" and Absenteeism
+### 4.2 Insight: The "Center of Gravity" and Absenteeism
 
 A crucial observation in our plots is the position of MPs with low participation. 
 
@@ -398,7 +271,7 @@ A crucial observation in our plots is the position of MPs with low participation
 ---
 
 
-### 5.2 Interpretation of the Principal Axes
+### 4.3 Interpretation of the PCA plots
 
 We observe elongated clusters of points radiating from the center. Within each political family, MPs closer to the origin are typically those with higher absenteeism, while those further away show higher participation. Party discipline can be assessed by the 'thinness' of these clusters: collinear vectors (thin clouds) indicate high voting discipline, whereas wider dispersion reveals internal dissent or individual deviations from the party line.
 
@@ -413,7 +286,62 @@ We observe elongated clusters of points radiating from the center. Within each p
 A reliable PCA could not be generated for the 14th Legislature due to extreme absenteeism and a low volume of ballot. While filtering out deputies with less than 20% participation was necessary to avoid the 'Arch Effect' and data distortion, it resulted in too few data points to provide more than basic legislative insights.
 
 
-### 5.4 Thematic Analysis
+### 4.4 Thematic Analysis
+
+We apply a **thematic classification** based on the title of each ballot vote. Themes include:
+- Ecology & Territories (agriculture, climate, energy, transport)
+- Economy & State (taxation, customs, inflation)
+- Security & International Affairs (police, justice, defense)
+- Solidarity & Social Policy (pensions, social benefits, disability)
+
+This enables **theme-based analyses**.
+
+#### Categorization Methodology
+
+We implemented a **deterministic keyword-matching algorithm**. This process filters the legislative titles provided by the NosDéputés.fr XML API to categorize each vote into one of four strategic domains.
+
+> **Methodological Note:** > While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable.
+
+The script scans each `titre` (title) tag within the XML response. If a keyword is found, the `scrutin_id` (ballot ID) is mapped to that specific theme using the following logic:
+
+```python
+THEMATIQUES = {
+    "Solidarité & Social": [
+        "pauvreté", "handicap", "retraite", "social", "précarité", "apl", 
+        "famille", "prestations", "rsa", "solidarité", "chômage"
+    ],
+    "Écologie & Territoires": [
+        "écologie", "environnement", "climat", "nucléaire", "énergie", "biodiversité", 
+        "eau", "agriculture", "agricole", "pesticide", "rural", "transport"
+    ],
+    "Économie & État": [
+        "économie", "fiscal", "impôt", "inflation", 
+        "douanes", "entreprises", "croissance"
+    ],
+    "Sécurité & International": [
+        "justice", "sécurité", "police", "prison", "immigration", 
+        "étranger", "asile", "frontière", "armée", "défense", "europe"
+    ]
+}
+```
+
+#### Dataset Overview: Distribution of Ballots by Theme
+
+The following table summarizes the volume of ballot votes analyzed for each legislature, categorized by their primary thematic focus. These themes serve as the basis for our comparative spatial analysis.
+
+| Theme | 14th Legislature (2012-2017) | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
+| :--- | :---: | :---: | :---: |
+| **Solidarity & Social** | 138 | 757 | 335 |
+| **Ecology & Territories** | 73 | 641 | 709 |
+| **Economy & State** | 72 | 157 | 68 |
+| **Security & International** | 26 | 396 | 519 |
+| **Total Analyzed Ballots** | **309** | **1,951** | **1,631** |
+
+> **Note:** The distribution of ballots shown above should not be used to draw direct conclusions about the evolution of parliamentary activity. The classification is based on a simple keyword-based filter, which inevitably misses certain ballots. The primary objective of this filtering process is not exhaustiveness, but relevance: we aim to isolate a selection of ballots that are certain to address the specific theme.
+
+There has been a notable rise in MP activity in recent years: the number of ballots grew from 1,023 during the 14th Legislature to 4,394 in the 15th and 4,029 in the 16th.
+
+#### PCA by Theme
 
 Beyond the global PCA, we repeat the analysis for each thematic domain. For example, for *“Solidarity & Social”*:
 
@@ -434,7 +362,7 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 - 16th Legislature - The LFI vs. LR Cleavage: The PCA identifies a clear opposition between LFI and LR. This represents the classic "Social vs. Liberal" divide regarding welfare, labor laws, and state intervention.
 
-- In the 16th Legislature's social PCA, the RN often drifts toward the center of the PC2 axis. This suggests a **hybrid voting strategy** supporting certain social measures while remaining distinct from the **redistributive models** proposed by the NUPES.
+- Regarding social issues, the RN exhibits a significant shift toward LFI's positions, creating a shared oppositional front against the LREM-LR nexus. This alignment highlights a clear divide between interventionist model and the liberal framework favored by the presidential majority and the traditional right.
 
 - The explained variance of the first principal component (PC1) serves as a proxy for how "structured" or predictable a political cleavage is:
     - 15th Legislature (PC1 ≈ 20%): Social issues were relatively fluid, with more heterogeneous voting patterns across the chamber.
@@ -444,11 +372,11 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 While PCA highlights party discipline and the macro-structure of political blocs, a fragmented assembly often requires transversal compromises to reach a majority. To identify the specific actors who facilitate these compromises, we use **Betweenness Centrality**. This metric moves beyond simple group membership to pinpoint deputies who act as mandatory "bridges" between different ideological clusters.
 
-### 6 Identification of Strategic Pivots (Betweenness Centrality)
+### 5 Identification of Strategic Pivots (Betweenness Centrality)
 
 Unlike simple popularity (Degree), this metric identifies deputies who act as mandatory "bridges" between different ideological clusters.
 
-#### 6.1. Mathematical Definition
+#### 5.1. Mathematical Definition
 The centrality $g(v)$ of an MP $v$ is calculated by counting how many shortest paths between all other pairs of MPs pass through $v$:
 
 $$g(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
@@ -457,36 +385,36 @@ Where:
 * $\sigma_{st}$ is the total number of shortest paths from MP $s$ to MP $t$.
 * $\sigma_{st}(v)$ is the number of those paths that pass through $v$.
 
-#### 6.2. Distance Inversion and Pathfinding
+#### 5.2. Distance Inversion and Pathfinding
 Since our graph edges represent **similarity** (Cosine Similarity), we must transform them into **distances** to find the "shortest" ideological path. We define the distance $d_{ij}$ as:
 
 $$d_{ij} = \frac{1}{\text{weight}_{ij} + \epsilon}$$
 
 This inversion ensures that a high voting similarity results in a short distance. The algorithm then identifies "pivots": deputies who, by their transversal voting patterns, minimize the distance between antagonistic groups (e.g., bridging the gap between the Majority and the Opposition).
 
-#### 6.3. Political Significance
+#### 5.3. Political Significance
 
 In a parliament without an absolute majority, these MPs represent the **connective tissue** of the institution. A high Betweenness score reveals a **brokerage capacity**: these individuals are structurally positioned to negotiate amendments that can "swing" a vote, as they constitute the most probable pathway for a ballot to transition from one political bloc to another.
 
 | Rank | 15th Leg. (2017-2022) | Group | | 16th Leg. (2022-2024) | Group |
 | :--- | :--- | :---: | :---: | :--- | :---: |
-| **1** | Jean-Luc Warsmann | UDI_I | | **Nathalie Bassire** | **LIOT** |
+| **1** | Jean-Luc Warsmann | UDI_I | | Nathalie Bassire | LIOT |
 | **2** | Karine Lebon | GDR | | Emmanuelle Ménard | NI |
 | **3** | Jennifer De Temmerman | LT | | Jean-Carles Grelier | REN |
 | **4** | Thierry Michels | LREM | | Olivier Serva | LIOT |
-| **5** | Agnès Thill | UDI_I | | Jean-Victor Castor | GDR-N |
+| **5** | Agnès Thill | UDI_I | | Jean-Victor Castor | GDR |
 | **6** | Lise Magnier | AGIR-E | | Mansour Kamardine | LR |
 | **7** | Jean-Philippe Nilor | GDR | | David Habib | NI |
-| **8** | **Charles de Courson** | **LT** | | **Charles de Courson** | **LIOT** |
+| **8** | Charles de Courson | LT | | Charles de Courson | LIOT |
 | **9** | Brigitte Bourguignon | LREM | | Victor Catteau | RN |
 | **10** | Paul Christophe | AGIR-E | | Laurent Panifous | LIOT |
 
 In the largest groups (REN, LFI, RN), the high level of party discipline—visible in the dense, isolated clusters of our PCA—mechanically reduces the betweenness score of individual members.
 Conversely, deputies from smaller or more heterogeneous groups (LIOT, NI, UDI) exhibit the highest betweenness scores. Their "intermediate" positioning and lower exposure to rigid party whips allow them to act as strategic variables.
 
-## 7. Conclusion:
+## 6. Conclusion:
 
-### 7.1 Geometric Reinterpretation of French Political Cleavages
+### 6.1 Geometric Reinterpretation of French Political Cleavages
 
 Our quantitative findings provide a mathematical framework to classical qualitative political science, while highlighting new structural shifts:
 
@@ -499,11 +427,11 @@ Our quantitative findings provide a mathematical framework to classical qualitat
    - **Insight:** In the "rationalized parliamentarism" of the French Fifth Republic, the "logic of the bloc" (supporting or opposing the government) remains the most powerful statistical predictor of voting behavior, often overriding personal or thematic nuances.
 
 
-### 7.2 The Strategic Function of Pivots
+### 6.2 The Strategic Function of Pivots
 
 Pivots (identified by high **Betweenness Centrality**) act as the "connective tissue" of the Assembly. They reduce the distance between antagonistic groups. Without enough bridges, the Assembly could more likely reach a state of legislative paralysis.
 
-### 7.3 Limitations: The "Hidden" Dimensions
+### 6.3 Limitations: The "Hidden" Dimensions
 
 While the 2D PCA captures the most visible signals (often ~15-20% of total variance), it intentionally discards the "noise" which often contains crucial secondary information. The remaining variance (axes 3 to $n$) typically hides:
 
@@ -512,7 +440,7 @@ While the 2D PCA captures the most visible signals (often ~15-20% of total varia
 - (...)
 
 
-### 7.4 Reproducibility
+### 6.4 Reproducibility
 
 This study demonstrates the **feasibility and utility** of combined quantitative techniques (graphs + PCA) to uncover political structure.
 
@@ -520,71 +448,18 @@ The full source code is available in the GitHub repository: [Networks-Analysis](
 
 ---
 
-## References
+## References & Data Sources
 
-Émond, V., & Holovatch, Y. (2014). Open data from NosDéputés.fr: A resource for computational political analysis. *Journal of Open Government Data*, 3(2), 45-62.
-[NosDéputés API](https://www.nosdeputes.fr/api/)
+* **NosDéputés.fr API** [https://www.nosdeputes.fr/api/](https://www.nosdeputes.fr/api/)  
+  *Provides programmatic access to parliamentary activities and metadata.*
 
-[Asssemblée Nationale](https://data.assemblee-nationale.fr/)
+* **Assemblée Nationale Open Data Portal** [https://data.assemblee-nationale.fr/](https://data.assemblee-nationale.fr/)  
+  *Official repository for voting records, law proposals, and legislative history.*
 
 ---
-
 ## Appendices
 
-### Appendix A: Raw Data and Descriptive Statistics
-
-```
-14th Legislature (2012-2017)
-──────────────────────────────
-Period: June 2012 → June 2017
-Deputies analyzed: 635
-Raw votes downloaded: 1023
-Votes retained (min_voters=0): 1023
-Similarity metric: Cosine
-k-NN parameter: 5
-```
-
-```
-15th Legislature (2017-2022)
-──────────────────────────────
-Period: June 2017 → June 2022
-Deputies analyzed: 648
-Raw votes downloaded: 4394
-Votes retained (min_voters=0): 4394
-Similarity metric: Cosine
-k-NN parameter: 5
-```
-
-```
-16th Legislature (2022-2024)
-──────────────────────────────
-Period: June 2022 → February 2024 [current date]
-Deputies analyzed: 605
-Raw votes downloaded: 4029
-Votes retained (min_voters=0): 4029
-Similarity metric: Cosine
-k-NN parameter: 5
-```
-
-
-### Appendix B: Detailed Python Codes (Execution)
-
-Full implementations are available in the GitHub repository: [Networks-Analysis](https://github.com/Ines2r/Networks-Analysis)
-
-Global pipeline execution:
-```bash
-cd /Users/inesderosnay/Desktop/politics_graphs
-python -m src.main
-```
-
-Generates:
-- Network graphs (PNG): Output/{years}/network_cosine.png
-- Global PCA graphs: Output/{years}/pca_Global.png
-- Thematic PCA graphs: Output/{years}/pca_*.png
-- Group distributions: Output/{years}/distribution.png
-- Text reports (stdout): Pivots, pillars, leaders
-
-### Appendix C: Intra-Group Analysis
+### Appendix A: Intra-Group Analysis
 
 For each political group $P$, we compute two distinct metrics:
 
@@ -597,14 +472,22 @@ For each political group $P$, we compute two distinct metrics:
    - Identify the node from the group with the maximum weighted degree in the full graph
    - Interpretation: The group member with the greatest external influence
 
+
+<div align="center">
+
 | Group | Cohesion Leader (Intra) | Hub Leader (Global) |
 | :--- | :--- | :--- |
 | **LREM** | Marie-Christine Verdier-Jouclas | Marie-Christine Verdier-Jouclas |
 | **LR** | Bernard Deflesselles | Bernard Deflesselles |
 | **SOC** | Christine Pires-Beaune | Christine Pires-Beaune |
 | **LFI** | Mathilde Panot | Mathilde Panot |
----
-**Figure 3:** For the 15th Legislature
+
+**Figure 3:** Key Leaders for the 15th Legislature
+</div>
+
+<br>
+
+<div align="center">
 
 | Group | Cohesion Leader (Intra) | Hub Leader (Global) |
 | :--- | :--- | :--- |
@@ -612,8 +495,9 @@ For each political group $P$, we compute two distinct metrics:
 | **RN** | Victor Catteau | Victor Catteau |
 | **LFI-NUPES** | Anne-Stambach-Terrenoir | Anne-Stambach-Terrenoir |
 | **LR** | Jean-Jacques Gaultier | Michel Herbillon |
----
-**Figure 4:** For the 16th Legislature
+
+**Figure 4:** Key Leaders for the 16th Legislature
+</div>
 
 The leaders identified in our tables (Figures 3 & 4) are often not household names. While Mathilde Panot is a notable exception, most "hubs" are relatively obscure backbenchers. This discrepancy reveals a potential limitation of our mathematical model.
 
@@ -631,3 +515,43 @@ We must remain critical of our choice of metric. While Cosine Similarity effecti
 Artificial Hubs: Is an MP a "Hub" because they lead others, or simply because they are the most "average" and frequent voter in their group?
 
 In short, our graph may be mapping legislative discipline rather than political influence. While Mathilde Panot proves that one person can be both a media leader and a legislative hub, for most parties, the "real" power likely lies outside the mathematical center of our clusters.
+
+### Appendix B: Architecture and Implementation of Data Retrieval
+
+### 1 Data Source and API
+
+**Primary source:** NosDéputés.fr — a freely accessible collaborative database, fed by the official data of the French National Assembly via its XML export protocols.
+
+**API endpoints:**
+```
+https://www.nosdeputes.fr/{LEGISLATURE}/scrutins/xml
+https://www.nosdeputes.fr/{LEGISLATURE}/scrutin/{SCRUTIN_ID}/xml
+```
+
+where `LEGISLATURE` $\in \{15, 16\}$ and `SCRUTIN_ID` is the numerical identifier of the vote.
+Unfortunately, the API hasn't the same amount of data for previous legislatures. For the 14th legislature, we found an archive on [Asssemblée Nationale](https://data.assemblee-nationale.fr/).
+
+### 2 Parallel Download Protocol
+
+To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPoolExecutor** with up to 10 concurrent workers.
+
+**Output:** Three CSV files generated
+- `dataset_scrutins_14.csv` (2012–2017)
+- `dataset_scrutins_15.csv` (2017–2022)
+- `dataset_scrutins_16.csv` (2022–2024)
+
+Each record: `{depute, group, position, scrutin_id}`
+
+### 3 Transformation into a Pivot Matrix
+
+The raw list of votes is transformed into a **sparse matrix**:
+
+```python
+pivot_votes = df.pivot_table(
+  index='depute', 
+  columns='scrutin_id', 
+  values='vote_val'
+)
+```
+
+---
